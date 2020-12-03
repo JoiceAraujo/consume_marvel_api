@@ -4,6 +4,8 @@ class Profile {
   String name;
   int accountId;
 
+  Profile(this.name, this.accountId, this.main);
+
   Profile.fromMap(Map<String, dynamic> map) {
     id = map['id'];
     name = map['name'];

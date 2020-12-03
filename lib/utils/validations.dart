@@ -21,4 +21,13 @@ class Validations {
     print(Errors.signInFailed);
     return account;
   }
+
+  bool nameIsValid(String name) {
+    if (name.isNotEmpty) {
+      return true;
+    } else {
+      print(Errors.invalidName);
+      return false;
+    }
+  }
 }

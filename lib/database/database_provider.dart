@@ -1,3 +1,4 @@
+import 'package:consume_marvel_api/models/profile.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -69,13 +70,37 @@ class DatabaseProvider {
 
 //  Profiles methods
 
-  void createProfile() {}
+  Future<Profile> createProfile(Profile profile) async {
+    final Database db = await database;
 
-  void deleteProfile() {}
+    try {
+      profile.id = await db.insert('Profiles', profile.toMap());
+      return profile;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  void deleteProfile(Profile profile) async {
+    final Database db = await database;
+
+    try {
+      db.delete(
+        'Profiles',
+        where: 'id = ?',
+        whereArgs: [profile.id],
+      );
+    } catch (e) {
+      print(e);
+    }
+  }
 
   void loadProfiles() {}
 
   void changeProfile() {}
 
   void currentProfile() {}
+
+  void createFirstProfile() {}
 }
