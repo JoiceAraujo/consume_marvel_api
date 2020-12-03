@@ -1,3 +1,4 @@
+import 'package:consume_marvel_api/models/profile.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -46,7 +47,9 @@ class DatabaseProvider {
       );
 
       if (queryResult.isNotEmpty) {
-        return Account.fromMap(queryResult.first);
+        Account account = Account.fromMap(queryResult.first);
+        createFirstProfile(account);
+        return account;
       } else {
         return account;
       }
@@ -69,4 +72,109 @@ class DatabaseProvider {
 
 //  Profiles methods
 
+  Future<Profile> createProfile(Profile profile) async {
+    final Database db = await database;
+
+    try {
+      profile.id = await db.insert('Profiles', profile.toMap());
+      return profile;
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  void deleteProfile(Profile profile) async {
+    final Database db = await database;
+
+    try {
+      db.delete(
+        'Profiles',
+        where: 'id = ?',
+        whereArgs: [profile.id],
+      );
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<List<Profile>> loadProfiles(Account account) async {
+    List<Profile> profiles = [];
+    final Database db = await database;
+
+    try {
+      final List<Map<String, dynamic>> queryResult = await db.query(
+        'Profiles',
+        where: 'account_id = ?',
+        whereArgs: [account.id],
+      );
+
+      if (queryResult.isNotEmpty) {
+        for (Map<String, dynamic> profile in queryResult) {
+          profiles.add(Profile.fromMap(profile));
+        }
+        return profiles;
+      } else {
+        return profiles;
+      }
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  Future<Profile> changeProfile(Profile profile) async {
+    final Database db = await database;
+
+    try {
+      List<Map<String, dynamic>> queryResult = await db.query(
+        'Profiles',
+        where: 'id = ?',
+        whereArgs: [profile.id],
+      );
+
+      if (queryResult.isNotEmpty) {
+        Profile profile = Profile.fromMap(queryResult.first);
+        return profile;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  Future<Profile> currentProfile(Account account) async {
+    final Database db = await database;
+    Profile profile;
+
+    try {
+      List<Map<String, dynamic>> queryResult = await db.query(
+        'Profiles',
+        where: 'main = ? && account_id = ?',
+        whereArgs: [
+          1,
+          account.id,
+        ],
+      );
+
+      if (queryResult.isNotEmpty) {
+        profile = Profile.fromMap(queryResult.first);
+        return profile;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  void createFirstProfile(Account account) async {
+    final Database db = await database;
+    Profile firstProfile = Profile(account.name, account.id, true);
+
+    firstProfile.id = await db.insert('Accounts', firstProfile.toMap());
+  }
 }
