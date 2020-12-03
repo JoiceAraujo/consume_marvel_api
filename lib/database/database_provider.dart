@@ -1,3 +1,4 @@
+import 'package:consume_marvel_api/models/account.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -30,13 +31,37 @@ class DatabaseProvider {
     return await openDatabase(path, version: 1, onCreate: onCreateFunction);
   }
 
-//  Account methods
+//  Accounts methods
 
-  void signIn() {}
+  Future<Account> signIn(email, encryptedPassword) async {
+    Account account;
+    final Database db = await database;
 
-  void signUp() {}
+    try {
+      final List<Map<String, dynamic>> queryResult = await db.query(
+        'Accounts',
+        where: 'email = ? AND encrypted_password =?',
+        whereArgs: [email, encryptedPassword],
+      );
 
-  void signOut() {}
+      if (queryResult.isNotEmpty) {
+        return Account.fromMap(queryResult.first);
+      } else {
+        return account;
+      }
+    } catch (e) {
+      print(e);
+      return account;
+    }
+  }
+
+  Future<Account> signUp(Account account) async {
+    final Database db = await database;
+
+    account.id = await db.insert('Accounts', account.toMap());
+
+    return account;
+  }
 
 //  Profiles methods
 
