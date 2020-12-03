@@ -69,4 +69,13 @@ class DatabaseProvider {
 
 //  Profiles methods
 
+  void createProfile() {}
+
+  void deleteProfile() {}
+
+  void loadProfiles() {}
+
+  void changeProfile() {}
+
+  void currentProfile() {}
 }
