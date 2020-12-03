@@ -1,8 +1,9 @@
-import 'package:consume_marvel_api/models/account.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../database/database_queries.dart';
+import '../models/account.dart';
+import '../utils/validations.dart';
 
 class DatabaseProvider {
   static final DatabaseProvider db = DatabaseProvider._();
@@ -57,10 +58,13 @@ class DatabaseProvider {
 
   Future<Account> signUp(Account account) async {
     final Database db = await database;
-
-    account.id = await db.insert('Accounts', account.toMap());
-
-    return account;
+    try {
+      account.id = await db.insert('Accounts', account.toMap());
+      return account;
+    } catch (e) {
+      print(e);
+      return Validations().signUpFailed();
+    }
   }
 
 //  Profiles methods
