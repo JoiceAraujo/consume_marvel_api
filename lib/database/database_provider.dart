@@ -47,7 +47,9 @@ class DatabaseProvider {
       );
 
       if (queryResult.isNotEmpty) {
-        return Account.fromMap(queryResult.first);
+        Account account = Account.fromMap(queryResult.first);
+        createFirstProfile(account);
+        return account;
       } else {
         return account;
       }
@@ -96,11 +98,83 @@ class DatabaseProvider {
     }
   }
 
-  void loadProfiles() {}
+  Future<List<Profile>> loadProfiles(Account account) async {
+    List<Profile> profiles = [];
+    final Database db = await database;
 
-  void changeProfile() {}
+    try {
+      final List<Map<String, dynamic>> queryResult = await db.query(
+        'Profiles',
+        where: 'account_id = ?',
+        whereArgs: [account.id],
+      );
 
-  void currentProfile() {}
+      if (queryResult.isNotEmpty) {
+        for (Map<String, dynamic> profile in queryResult) {
+          profiles.add(Profile.fromMap(profile));
+        }
+        return profiles;
+      } else {
+        return profiles;
+      }
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
 
-  void createFirstProfile() {}
+  Future<Profile> changeProfile(Profile profile) async {
+    final Database db = await database;
+
+    try {
+      List<Map<String, dynamic>> queryResult = await db.query(
+        'Profiles',
+        where: 'id = ?',
+        whereArgs: [profile.id],
+      );
+
+      if (queryResult.isNotEmpty) {
+        Profile profile = Profile.fromMap(queryResult.first);
+        return profile;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  Future<Profile> currentProfile(Account account) async {
+    final Database db = await database;
+    Profile profile;
+
+    try {
+      List<Map<String, dynamic>> queryResult = await db.query(
+        'Profiles',
+        where: 'main = ? && account_id = ?',
+        whereArgs: [
+          1,
+          account.id,
+        ],
+      );
+
+      if (queryResult.isNotEmpty) {
+        profile = Profile.fromMap(queryResult.first);
+        return profile;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
+
+  void createFirstProfile(Account account) async {
+    final Database db = await database;
+    Profile firstProfile = Profile(account.name, account.id, true);
+
+    firstProfile.id = await db.insert('Accounts', firstProfile.toMap());
+  }
 }

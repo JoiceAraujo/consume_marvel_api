@@ -12,6 +12,7 @@ class ProfileService {
 
   Future<Profile> createProfile(Account account, String name) async {
     Profile profile = Profile(name, account.id, false);
+
     if (validations.nameIsValid(name)) {
       Profile completeProfile = await database.createProfile(profile);
       return completeProfile;
@@ -24,9 +25,27 @@ class ProfileService {
     database.deleteProfile(profile);
   }
 
-  void loadProfiles() {}
+  Future<List<Profile>> loadProfiles(Account account) async {
+    return await database.loadProfiles(account);
+  }
 
-  void changeProfile() {}
+  Future<Profile> changeProfile(Profile profile) async {
+    _prefs = await SharedPreferences.getInstance();
+    Profile newProfile = await database.changeProfile(profile);
 
-  void currentProfile() {}
+    _prefs.setString('name', newProfile.name);
+    _prefs.getString('name');
+
+    return newProfile;
+  }
+
+  Future<Profile> currentProfile(Account account) async {
+    _prefs = await SharedPreferences.getInstance();
+    Profile profile = await database.currentProfile(account);
+
+    _prefs.setString('name', profile.name);
+    _prefs.getString('name');
+
+    return profile;
+  }
 }
