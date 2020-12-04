@@ -4,4 +4,5 @@ class Errors {
   static const String signInFailed = 'Sorry! We cannot complete this operation';
   static const String signUpFailed = 'Sorry! We cannot complete this operation';
   static const String invalidName = 'The name must have a value!';
+  static const String deleteMainProfile = 'You cannot delete the main profile!';
 }
