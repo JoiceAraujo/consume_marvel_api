@@ -3,6 +3,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../database/database_provider.dart';
 import '../models/account.dart';
 import '../models/profile.dart';
+import '../utils/errors.dart';
 import '../utils/validations.dart';
 
 class ProfileService {
@@ -22,11 +23,22 @@ class ProfileService {
   }
 
   void deleteProfile(Profile profile) {
-    database.deleteProfile(profile);
+    if (profile.main) {
+      print(Errors.deleteMainProfile);
+      //TODO: Isso está incorreto?
+      // profile.errors = Errors.deleteMainProfile;
+    } else {
+      database.deleteProfile(profile);
+    }
   }
 
   Future<List<Profile>> loadProfiles(Account account) async {
-    return await database.loadProfiles(account);
+    List<Profile> profilesList = await database.loadProfiles(account);
+    if (profilesList.isNotEmpty) {
+      return profilesList;
+    } else {
+      return profilesList;
+    }
   }
 
   Future<Profile> changeProfile(Profile profile) async {

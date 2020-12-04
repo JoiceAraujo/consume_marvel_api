@@ -33,12 +33,14 @@ class AccountService {
     }
   }
 
-  void signUp(Account account) async {
+  Future<bool> signUp(Account account) async {
     if (validation.emailIsValid(account.email)) {
       Account accountService = await database.signUp(account);
       signIn(accountService.email, accountService.encryptedPassword);
+      return true;
     } else {
       print(Errors.invalidEmail);
+      return false;
     }
   }
 
