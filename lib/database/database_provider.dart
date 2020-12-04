@@ -1,9 +1,9 @@
-import 'package:consume_marvel_api/models/profile.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../database/database_queries.dart';
 import '../models/account.dart';
+import '../models/profile.dart';
 import '../utils/validations.dart';
 
 class DatabaseProvider {
