@@ -1,8 +1,8 @@
-import 'package:consume_marvel_api/utils/errors.dart';
 import 'package:dio/dio.dart';
 
 import '../models/character.dart';
 import '../utils/constants.dart';
+import '../utils/errors.dart';
 
 class CharacterApiService {
   static final Dio dio = Dio();
