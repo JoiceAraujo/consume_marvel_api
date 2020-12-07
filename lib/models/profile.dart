@@ -4,9 +4,6 @@ class Profile {
   String name;
   int accountId;
 
-  ////TODO: Isso está incorreto?
-  // String errors;
-
   Profile(this.name, this.accountId, this.main);
 
   Profile.fromMap(Map<String, dynamic> map) {
