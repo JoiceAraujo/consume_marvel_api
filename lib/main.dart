@@ -1,8 +1,8 @@
-import 'package:consume_marvel_api/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import 'controllers/characters_api_controller.dart';
+import 'utils/app_routes.dart';
 
 void main() {
   runApp(MyApp());
@@ -23,7 +23,8 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.red,
           backgroundColor: Colors.black54,
         ),
-        home: HomeScreen(),
+        initialRoute: AppRoutes.initialRoute,
+        routes: AppRoutes.routes,
       ),
     );
   }
