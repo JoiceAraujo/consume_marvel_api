@@ -24,9 +24,7 @@ class ProfileService {
 
   void deleteProfile(Profile profile) {
     if (profile.main) {
-      print(Errors.deleteMainProfile);
-      //TODO: Isso está incorreto?
-      // profile.errors = Errors.deleteMainProfile;
+      print('deleteProfile' + ' ' + Errors.deleteMainProfile);
     } else {
       database.deleteProfile(profile);
     }
