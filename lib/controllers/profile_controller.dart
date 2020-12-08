@@ -9,7 +9,7 @@ class ProfileController extends ChangeNotifier {
   Profile profile = Profile('Loading', 1, false);
   ProfileState state = ProfileState.undefined;
   List<Profile> profilesList = [];
-  ProfileService profileService;
+  ProfileService profileService = ProfileService();
 
   void init() async {
     state = ProfileState.loading;

@@ -51,6 +51,7 @@ class DatabaseProvider {
         createFirstProfile(account);
         return account;
       } else {
+        print(account);
         return account;
       }
     } catch (e) {
