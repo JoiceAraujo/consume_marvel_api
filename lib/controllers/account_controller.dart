@@ -4,56 +4,57 @@ import '../models/account.dart';
 import '../services/account_service.dart';
 
 class AccountController extends ChangeNotifier {
-  AccountService accountService;
-  AccountState state = AccountState.undefined;
+  AccountService accountService = AccountService();
+  AccountState accountState = AccountState.undefined;
   Account account;
 
   void init() async {
-    state = AccountState.authenticating;
+    accountState = AccountState.authenticating;
     notifyListeners();
 
     account = await accountService.accountLogged();
 
     if (account != null) {
-      state = AccountState.authenticated;
+      accountState = AccountState.authenticated;
     } else {
-      state = AccountState.unauthenticated;
+      accountState = AccountState.unauthenticated;
     }
     notifyListeners();
   }
 
   void signIn(email, encryptedPassword) async {
-    state = AccountState.authenticating;
+    accountState = AccountState.authenticating;
     notifyListeners();
 
     account = await accountService.signIn(email, encryptedPassword);
     if (account != null) {
-      state = AccountState.authenticated;
+      accountState = AccountState.authenticated;
     } else {
-      state = AccountState.unauthenticated;
+      accountState = AccountState.error;
     }
     notifyListeners();
   }
 
   void signUp(Account newAccount) async {
-    state = AccountState.authenticating;
+    accountState = AccountState.authenticating;
     notifyListeners();
 
-    if (await accountService.signUp(account)) {
-      state = AccountState.authenticated;
+    account = await accountService.signUp(newAccount);
+    if (account != null) {
+      accountState = AccountState.authenticated;
     } else {
-      state = AccountState.unauthenticated;
+      accountState = AccountState.unauthenticated;
     }
     notifyListeners();
   }
 
   void signOut() {
-    state = AccountState.authenticated;
+    accountState = AccountState.authenticated;
     notifyListeners();
 
     accountService.signOut();
 
-    state = AccountState.unauthenticated;
+    accountState = AccountState.unauthenticated;
     notifyListeners();
   }
 }
@@ -63,4 +64,5 @@ enum AccountState {
   unauthenticated,
   authenticated,
   authenticating,
+  error,
 }
