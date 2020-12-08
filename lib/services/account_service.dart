@@ -2,7 +2,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../database/database_provider.dart';
 import '../models/account.dart';
-import '../utils/errors.dart';
 import '../utils/validations.dart';
 
 class AccountService {
@@ -29,18 +28,15 @@ class AccountService {
       _prefs.setString('encryptedPassword', account.encryptedPassword);
       return account;
     } else {
-      return validation.signInFailed();
+      return null;
     }
   }
 
-  Future<bool> signUp(Account account) async {
-    if (validation.emailIsValid(account.email)) {
-      Account accountService = await database.signUp(account);
-      signIn(accountService.email, accountService.encryptedPassword);
-      return true;
-    } else {
-      print(Errors.invalidEmail);
-      return false;
+  Future<Account> signUp(Account account) async {
+    Account accountService = await database.signUp(account);
+    if (accountService != null) {
+      return await signIn(
+          accountService.email, accountService.encryptedPassword);
     }
   }
 

@@ -2,12 +2,16 @@ import '../models/account.dart';
 import '../utils/errors.dart';
 
 class Validations {
+  bool credentialsIsNotEmpty(String email, String password) {
+    return email.isNotEmpty && password.isNotEmpty == true ? true : false;
+  }
+
   bool emailIsValid(String email) {
-    if (email.contains('@') && email.contains('.')) {
-      return true;
-    } else {
-      return false;
-    }
+    return email.contains('@') && email.contains('.') ? true : false;
+  }
+
+  bool passwordIsValid(String password) {
+    return password.length >= 6 ? true : false;
   }
 
   Account signInFailed() {
