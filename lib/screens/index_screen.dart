@@ -1,9 +1,9 @@
-import 'package:consume_marvel_api/screens/search_characters_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../controllers/characters_api_controller.dart';
 import '../screens/profile_screen.dart';
+import '../screens/search_characters_screen.dart';
 
 class IndexScreen extends StatefulWidget {
   static const String route = '/index_screen';

@@ -1,9 +1,10 @@
-import 'package:consume_marvel_api/controllers/account_controller.dart';
-import 'package:consume_marvel_api/screens/index_screen.dart';
-import 'package:consume_marvel_api/screens/sign_in_screen.dart';
-import 'package:consume_marvel_api/screens/sign_up_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../controllers/account_controller.dart';
+import '../screens/index_screen.dart';
+import '../screens/sign_in_screen.dart';
+import '../screens/sign_up_screen.dart';
 
 // import '../controllers/characters_api_controller.dart';
 // import '../screens/search_characters_screen.dart';
