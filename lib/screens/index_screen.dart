@@ -1,8 +1,8 @@
+import 'package:consume_marvel_api/screens/search_characters_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../controllers/characters_api_controller.dart';
-import '../screens/home_screen.dart';
 import '../screens/profile_screen.dart';
 
 class IndexScreen extends StatefulWidget {
@@ -13,7 +13,7 @@ class IndexScreen extends StatefulWidget {
 
 class _IndexScreenState extends State<IndexScreen> {
   final List<Widget> _screens = [
-    HomeScreen(),
+    SearchCharactersScreen(),
     ProfileScreen(),
   ];
   int _currentIndex = 0;

@@ -14,12 +14,8 @@ class ProfileService {
   Future<Profile> createProfile(Account account, String name) async {
     Profile profile = Profile(name, account.id, false);
 
-    if (validations.nameIsValid(name)) {
-      Profile completeProfile = await database.createProfile(profile);
-      return completeProfile;
-    } else {
-      return null;
-    }
+    Profile completeProfile = await database.createProfile(profile);
+    return completeProfile;
   }
 
   void deleteProfile(Profile profile) {

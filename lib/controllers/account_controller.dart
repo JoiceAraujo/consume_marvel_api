@@ -40,6 +40,7 @@ class AccountController extends ChangeNotifier {
     notifyListeners();
 
     account = await accountService.signUp(newAccount);
+    print(accountState);
     if (account != null) {
       accountState = AccountState.authenticated;
     } else {

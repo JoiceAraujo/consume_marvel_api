@@ -48,7 +48,6 @@ class DatabaseProvider {
 
       if (queryResult.isNotEmpty) {
         Account account = Account.fromMap(queryResult.first);
-        createFirstProfile(account);
         return account;
       } else {
         print(account);
@@ -64,6 +63,7 @@ class DatabaseProvider {
     final Database db = await database;
     try {
       account.id = await db.insert('Accounts', account.toMap());
+      createFirstProfile(account);
       return account;
     } catch (e) {
       print(e);
@@ -176,6 +176,6 @@ class DatabaseProvider {
     final Database db = await database;
     Profile firstProfile = Profile(account.name, account.id, true);
 
-    firstProfile.id = await db.insert('Accounts', firstProfile.toMap());
+    firstProfile.id = await db.insert('Profiles', firstProfile.toMap());
   }
 }

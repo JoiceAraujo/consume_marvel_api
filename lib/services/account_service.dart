@@ -37,6 +37,8 @@ class AccountService {
     if (accountService != null) {
       return await signIn(
           accountService.email, accountService.encryptedPassword);
+    } else {
+      return null;
     }
   }
 
