@@ -1,4 +1,5 @@
 import 'package:consume_marvel_api/controllers/account_controller.dart';
+import 'package:consume_marvel_api/controllers/profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
       providers: [
         ChangeNotifierProvider(create: (_) => CharactersApiController()),
         ChangeNotifierProvider(create: (_) => AccountController()..init()),
+        ChangeNotifierProvider(create: (_) => ProfileController()..init()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

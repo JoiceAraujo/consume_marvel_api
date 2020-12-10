@@ -1,18 +1,20 @@
+import 'package:consume_marvel_api/controllers/profile_controller.dart';
+import 'package:consume_marvel_api/widgets/elevated_button_custom.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class ProfileScreen extends StatefulWidget {
+class ProfileScreen extends StatelessWidget {
   static const String route = '/profile_screen';
-  @override
-  _ProfileScreenState createState() => _ProfileScreenState();
-}
 
-class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      child: Center(
-        child: Text('Have Faith'),
-      ),
+    final List<Profile> profileList = Provider.of<ProfileController>(context).
+
+    return Column(
+      children: [
+        ElevatedButtonCustom('titleButton', () {}),
+        ListView(),
+      ],
     );
   }
 }
