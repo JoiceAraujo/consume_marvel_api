@@ -60,11 +60,11 @@ class ProfileController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void changeProfile(Profile profile) async {
+  void changeProfile(Profile newProfile) async {
     state = ProfileState.loading;
     notifyListeners();
 
-    profile = await profileService.changeProfile(profile);
+    profile = await profileService.changeProfile(newProfile);
 
     state = ProfileState.ready;
     notifyListeners();
