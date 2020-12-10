@@ -18,8 +18,6 @@ class CharactersApiController extends ChangeNotifier {
     if (character != null) {
       characterImageLink = await marvelApiService.getImageLink(character);
       charactersState = CharactersState.ready;
-
-      print(character.toMap());
     } else {
       charactersState = CharactersState.error;
     }

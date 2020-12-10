@@ -20,7 +20,6 @@ class _IndexScreenState extends State<IndexScreen> {
   int _currentIndex = 0;
 
   void onTabTapped(int index) {
-    print(index);
     setState(() {
       _currentIndex = index;
     });

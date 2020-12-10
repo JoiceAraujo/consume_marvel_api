@@ -50,7 +50,6 @@ class DatabaseProvider {
         Account account = Account.fromMap(queryResult.first);
         return account;
       } else {
-        print(account);
         return account;
       }
     } catch (e) {
@@ -153,7 +152,7 @@ class DatabaseProvider {
     try {
       List<Map<String, dynamic>> queryResult = await db.query(
         'Profiles',
-        where: 'main = ? && account_id = ?',
+        where: 'main = ? AND account_id = ?',
         whereArgs: [
           1,
           account.id,

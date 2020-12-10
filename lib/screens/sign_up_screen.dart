@@ -88,7 +88,6 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 'SignUp',
                 () {
                   if (_formKey.currentState.validate()) {
-                    print('form valid');
                     Account account = Account(
                       _nameCtrl.text.trim(),
                       _emailCtrl.text.trim(),

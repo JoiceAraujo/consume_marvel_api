@@ -2,7 +2,6 @@ import 'package:dio/dio.dart';
 
 import '../models/character.dart';
 import '../utils/constants.dart';
-import '../utils/errors.dart';
 
 class CharacterApiService {
   static final Dio dio = Dio();
@@ -20,7 +19,7 @@ class CharacterApiService {
         return null;
       }
     } catch (e) {
-      print(Errors.characterNotFound);
+      print(e);
       return null;
     }
   }

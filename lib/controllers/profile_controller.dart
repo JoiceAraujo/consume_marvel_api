@@ -20,6 +20,7 @@ class ProfileController extends ChangeNotifier {
       state = ProfileState.ready;
 
       profilesList = await profileService.loadProfiles(account);
+      currentProfile(account);
     } else {
       state = ProfileState.undefined;
     }
