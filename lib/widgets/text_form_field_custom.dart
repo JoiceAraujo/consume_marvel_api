@@ -5,12 +5,14 @@ class TextFormFieldCustom extends StatelessWidget {
   final String Function(String) validation;
   final TextCapitalization capitalization;
   final String labelText;
+  final autofocusText;
 
   TextFormFieldCustom(
     this.ctrl,
     this.validation,
     this.capitalization,
     this.labelText,
+    this.autofocusText,
   );
   @override
   Widget build(BuildContext context) {
@@ -18,6 +20,7 @@ class TextFormFieldCustom extends StatelessWidget {
       padding: EdgeInsets.all(15.0),
       child: TextFormField(
         controller: ctrl,
+        autofocus: autofocusText,
         validator: validation,
         textCapitalization: capitalization,
         decoration: InputDecoration(

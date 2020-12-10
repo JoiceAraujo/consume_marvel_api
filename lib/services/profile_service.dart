@@ -3,7 +3,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../database/database_provider.dart';
 import '../models/account.dart';
 import '../models/profile.dart';
-import '../utils/errors.dart';
 import '../utils/validations.dart';
 
 class ProfileService {
@@ -18,11 +17,12 @@ class ProfileService {
     return completeProfile;
   }
 
-  void deleteProfile(Profile profile) {
+  bool deleteProfile(Profile profile) {
     if (profile.main) {
-      print('deleteProfile' + ' ' + Errors.deleteMainProfile);
+      return false;
     } else {
       database.deleteProfile(profile);
+      return true;
     }
   }
 

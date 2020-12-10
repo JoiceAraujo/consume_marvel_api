@@ -52,6 +52,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 },
                 TextCapitalization.words,
                 'Name',
+                false,
               ),
               TextFormFieldCustom(
                 _emailCtrl,
@@ -60,6 +61,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 },
                 TextCapitalization.none,
                 'Email',
+                false,
               ),
               TextFormFieldCustom(
                 _birthdayCtrl,
@@ -68,6 +70,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 },
                 TextCapitalization.none,
                 'Birthday',
+                false,
               ),
               TextPassword(
                 _passwordCtrl,

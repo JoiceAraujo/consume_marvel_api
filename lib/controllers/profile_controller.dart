@@ -46,9 +46,14 @@ class ProfileController extends ChangeNotifier {
     state = ProfileState.loading;
     notifyListeners();
 
-    profileService.deleteProfile(profile);
+    if (profileService.deleteProfile(profile)) {
+      state = ProfileState.ready;
 
-    state = ProfileState.ready;
+      profilesList.removeWhere((element) => element == profile);
+    } else {
+      state = ProfileState.error;
+    }
+
     notifyListeners();
   }
 
