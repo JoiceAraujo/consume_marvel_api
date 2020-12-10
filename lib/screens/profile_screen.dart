@@ -10,17 +10,31 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ctrlProfile = Provider.of<ProfileController>(context);
-    final accountController =
+    final ProfileController ctrlProfile =
+        Provider.of<ProfileController>(context);
+    final AccountController accountController =
         Provider.of<AccountController>(context, listen: false);
     final List<Profile> profileList = ctrlProfile.profilesList;
 
     return Column(
       children: [
-        ElevatedButtonCustom('Sign Out', () {
-          accountController.signOut();
-        }),
-        ListView(),
+        ElevatedButtonCustom(
+          'Sign Out',
+          () {
+            accountController.signOut();
+          },
+        ),
+        ListView.builder(
+          itemCount: profileList.length,
+          itemBuilder: (context, index) {
+            return ElevatedButtonCustom(
+              profileList[index].name,
+              () {
+                ctrlProfile.changeProfile(profileList[index]);
+              },
+            );
+          },
+        ),
       ],
     );
   }

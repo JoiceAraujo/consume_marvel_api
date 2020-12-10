@@ -1,3 +1,4 @@
+import 'package:consume_marvel_api/controllers/profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -25,10 +26,11 @@ class _IndexScreenState extends State<IndexScreen> {
     });
   }
 
-  Widget getLeading(BuildContext _) {
-    CharactersApiController ctrl = Provider.of<CharactersApiController>(_);
+  Widget getLeading(BuildContext context) {
+    final CharactersApiController ctrlCharacters =
+        Provider.of<CharactersApiController>(context);
 
-    switch (ctrl.charactersState) {
+    switch (ctrlCharacters.charactersState) {
       case CharactersState.ready:
         return IconButton(
           icon: Icon(
@@ -47,9 +49,12 @@ class _IndexScreenState extends State<IndexScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final ProfileController ctrlProfile =
+        Provider.of<ProfileController>(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: Text('Marvel Api'),
+        title: Text(ctrlProfile.profile.name),
         leading: getLeading(context),
       ),
       body: _screens[_currentIndex],
