@@ -54,4 +54,16 @@ class ProfileService {
 
     return profile;
   }
+
+  Future<Profile> getMainProfile(Account account) async {
+    Profile profile = await database.getMainProfile(account);
+
+    if (profile != null) {
+      _prefs.setString('name', profile.name);
+      _prefs.getString('name');
+      return profile;
+    } else {
+      return null;
+    }
+  }
 }

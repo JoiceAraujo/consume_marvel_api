@@ -177,4 +177,25 @@ class DatabaseProvider {
 
     firstProfile.id = await db.insert('Profiles', firstProfile.toMap());
   }
+
+  Future<Profile> getMainProfile(Account account) async {
+    final Database db = await database;
+    try {
+      List<Map<String, dynamic>> queryResult = await db.query(
+        'Profiles',
+        where: 'main = ? AND account_id = ?',
+        whereArgs: [1, account.id],
+      );
+
+      if (queryResult.isNotEmpty) {
+        Profile profile = Profile.fromMap(queryResult.first);
+        return profile;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print(e);
+      return null;
+    }
+  }
 }

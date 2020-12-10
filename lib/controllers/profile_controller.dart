@@ -42,14 +42,17 @@ class ProfileController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void deleteProfile(Profile profile) {
+  void deleteProfile(Profile deleteProfile) async {
     state = ProfileState.loading;
     notifyListeners();
 
-    if (profileService.deleteProfile(profile)) {
+    if (profileService.deleteProfile(deleteProfile)) {
       state = ProfileState.ready;
 
-      profilesList.removeWhere((element) => element == profile);
+      profilesList.removeWhere((element) => element == deleteProfile);
+
+      Account account = await AccountService().accountLogged();
+      profile = await profileService.getMainProfile(account);
     } else {
       state = ProfileState.error;
     }
