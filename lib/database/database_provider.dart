@@ -145,16 +145,16 @@ class DatabaseProvider {
     }
   }
 
-  Future<Profile> currentProfile(Account account) async {
+  Future<Profile> currentProfile(Account account, String nameProfile) async {
     final Database db = await database;
     Profile profile;
 
     try {
       List<Map<String, dynamic>> queryResult = await db.query(
         'Profiles',
-        where: 'main = ? AND account_id = ?',
+        where: 'name = ? AND account_id = ?',
         whereArgs: [
-          1,
+          nameProfile,
           account.id,
         ],
       );

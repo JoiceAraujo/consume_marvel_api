@@ -1,11 +1,11 @@
+import 'package:consume_marvel_api/utils/errors.dart';
+import 'package:consume_marvel_api/widgets/alert_dialog_error.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../controllers/account_controller.dart';
 import '../controllers/profile_controller.dart';
 import '../models/profile.dart';
-import '../utils/errors.dart';
-import '../widgets/alert_dialog_error.dart';
 import '../widgets/elevated_button_custom.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -19,7 +19,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final ProfileController ctrlProfile =
-        Provider.of<ProfileController>(context);
+        Provider.of<ProfileController>(context, listen: true);
     final AccountController accountController =
         Provider.of<AccountController>(context, listen: false);
     List<Profile> profileList = ctrlProfile.profilesList;
@@ -36,17 +36,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     Icons.clear,
                     size: 20.0,
                   ),
-                  onPressed: () {
-                    ctrlProfile.deleteProfile(profile);
+                  onPressed: () async {
+                    await ctrlProfile.deleteProfile(profile);
                     if (ctrlProfile.state == ProfileState.error) {
                       showDialog(
-                          context: context,
-                          builder: (BuildContext context) {
-                            return AlertDialogError(
-                                'ERROR', Errors.deleteMainProfile);
-                          });
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialogError(
+                              'ERROR', Errors.deleteMainProfile);
+                        },
+                      );
                     } else {
-                      profileList = ctrlProfile.profilesList;
+                      profileList = await ctrlProfile.profilesList;
                     }
                   },
                 ),

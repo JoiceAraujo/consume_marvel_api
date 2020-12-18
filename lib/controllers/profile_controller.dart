@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../models/account.dart';
 import '../models/profile.dart';
@@ -16,14 +17,17 @@ class ProfileController extends ChangeNotifier {
     notifyListeners();
 
     Account account = await AccountService().accountLogged();
-    if (account != null) {
-      state = ProfileState.ready;
 
+    if (account != null) {
       profilesList = await profileService.loadProfiles(account);
-      currentProfile(account);
+
+      profile = await profileService.getMainProfile(account);
+
+      state = ProfileState.ready;
     } else {
       state = ProfileState.undefined;
     }
+
     notifyListeners();
   }
 
@@ -34,6 +38,7 @@ class ProfileController extends ChangeNotifier {
     profile = await profileService.createProfile(account, name);
     if (profile != null) {
       profilesList.add(profile);
+      profileService.currentProfile(account);
 
       state = ProfileState.ready;
     } else {
@@ -46,13 +51,21 @@ class ProfileController extends ChangeNotifier {
     state = ProfileState.loading;
     notifyListeners();
 
-    if (profileService.deleteProfile(deleteProfile)) {
-      state = ProfileState.ready;
+    Account account = await AccountService().accountLogged();
 
-      profilesList.removeWhere((element) => element == deleteProfile);
+    if (!deleteProfile.main) {
+      Profile currentProfile = await profileService.currentProfile(account);
+      if (deleteProfile.name == currentProfile.name) {
+        removeProfileFromLocalListAndDataBase(deleteProfile);
 
-      Account account = await AccountService().accountLogged();
-      profile = await profileService.getMainProfile(account);
+        await changeProfile(await profileService.getMainProfile(account));
+
+        state = ProfileState.ready;
+      } else {
+        removeProfileFromLocalListAndDataBase(deleteProfile);
+
+        state = ProfileState.ready;
+      }
     } else {
       state = ProfileState.error;
     }
@@ -60,23 +73,20 @@ class ProfileController extends ChangeNotifier {
     notifyListeners();
   }
 
+  void removeProfileFromLocalListAndDataBase(Profile deleteProfile) async {
+    profilesList.removeWhere((element) => element == deleteProfile);
+    await profileService.deleteProfile(deleteProfile);
+  }
+
   void changeProfile(Profile newProfile) async {
     state = ProfileState.loading;
     notifyListeners();
 
     profile = await profileService.changeProfile(newProfile);
+    print(profile.name);
 
     state = ProfileState.ready;
     notifyListeners();
-  }
-
-  void currentProfile(Account account) async {
-    state = ProfileState.loading;
-    notifyListeners();
-
-    profile = await profileService.currentProfile(account);
-
-    state = ProfileState.ready;
   }
 }
 

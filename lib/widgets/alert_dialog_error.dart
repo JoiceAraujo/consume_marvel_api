@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class AlertDialogError extends StatelessWidget {
+class AlertDialogError extends StatefulWidget {
   final String titleAlert;
   final String error;
 
@@ -8,11 +8,17 @@ class AlertDialogError extends StatelessWidget {
     this.titleAlert,
     this.error,
   );
+
+  @override
+  _AlertDialogErrorState createState() => _AlertDialogErrorState();
+}
+
+class _AlertDialogErrorState extends State<AlertDialogError> {
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
-      title: Text(titleAlert),
-      content: Text(error),
+      title: Text(widget.titleAlert),
+      content: Text(widget.error),
       actions: [
         FlatButton(
           child: Text('OK'),
