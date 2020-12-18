@@ -35,10 +35,12 @@ class ProfileController extends ChangeNotifier {
     state = ProfileState.loading;
     notifyListeners();
 
-    profile = await profileService.createProfile(account, name);
-    if (profile != null) {
+    if (await profileService.profileExist(account, name) == false) {
+      profile = await profileService.createProfile(account, name);
+
       profilesList.add(profile);
-      profileService.currentProfile(account);
+
+      await profileService.currentProfile(account);
 
       state = ProfileState.ready;
     } else {
@@ -83,7 +85,6 @@ class ProfileController extends ChangeNotifier {
     notifyListeners();
 
     profile = await profileService.changeProfile(newProfile);
-    print(profile.name);
 
     state = ProfileState.ready;
     notifyListeners();

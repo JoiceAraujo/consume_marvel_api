@@ -1,11 +1,11 @@
-import 'package:consume_marvel_api/controllers/profile_controller.dart';
-import 'package:consume_marvel_api/widgets/alert_dialog_add_profile.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../controllers/characters_api_controller.dart';
+import '../controllers/profile_controller.dart';
 import '../screens/profile_screen.dart';
 import '../screens/search_characters_screen.dart';
+import '../widgets/alert_dialog_add_profile.dart';
 
 class IndexScreen extends StatefulWidget {
   static const String route = '/index_screen';

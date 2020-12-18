@@ -15,4 +15,6 @@ class Errors {
   static const String passwordsNotEquals =
       'The Password and Password Confirmation must be the same!';
   static const String nullBirthday = 'The birthday must have a value!';
+  static const String existingProfile =
+      'A profile with that name already exists in your account. Try another name.';
 }

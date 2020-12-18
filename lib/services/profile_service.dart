@@ -69,4 +69,10 @@ class ProfileService {
       return null;
     }
   }
+
+  Future<bool> profileExist(Account account, String name) async {
+    Profile profile = await database.profileExist(account, name);
+
+    return profile != null;
+  }
 }

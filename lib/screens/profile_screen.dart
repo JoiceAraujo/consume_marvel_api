@@ -1,11 +1,11 @@
-import 'package:consume_marvel_api/utils/errors.dart';
-import 'package:consume_marvel_api/widgets/alert_dialog_error.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../controllers/account_controller.dart';
 import '../controllers/profile_controller.dart';
 import '../models/profile.dart';
+import '../utils/errors.dart';
+import '../widgets/alert_dialog_error.dart';
 import '../widgets/elevated_button_custom.dart';
 
 class ProfileScreen extends StatefulWidget {
@@ -69,23 +69,3 @@ class _ProfileScreenState extends State<ProfileScreen> {
     );
   }
 }
-
-// ListView.builder(
-//   itemCount: profileList.length,
-//   shrinkWrap: true,
-//   itemBuilder: (context, index) {
-//     return ElevatedButtonCustom(
-//       profileList[index].name,
-//       () {
-//         ctrlProfile.changeProfile(profileList[index]);
-//       },
-//     );
-//   },
-// ),
-
-//   ElevatedButtonCustom(
-//   profile.name,
-//   () {
-//     ctrlProfile.changeProfile(profile);
-//   },
-// );

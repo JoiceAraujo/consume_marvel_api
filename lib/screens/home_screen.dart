@@ -6,11 +6,6 @@ import '../screens/index_screen.dart';
 import '../screens/sign_in_screen.dart';
 import '../screens/sign_up_screen.dart';
 
-// import '../controllers/characters_api_controller.dart';
-// import '../screens/search_characters_screen.dart';
-// import '../utils/errors.dart';
-// import 'character_screen.dart';
-
 class HomeScreen extends StatelessWidget {
   static const String route = '/home_screen';
   @override

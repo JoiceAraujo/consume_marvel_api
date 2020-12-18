@@ -1,9 +1,9 @@
-import 'package:consume_marvel_api/controllers/account_controller.dart';
-import 'package:consume_marvel_api/controllers/profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'controllers/account_controller.dart';
 import 'controllers/characters_api_controller.dart';
+import 'controllers/profile_controller.dart';
 import 'utils/app_routes.dart';
 
 void main() {

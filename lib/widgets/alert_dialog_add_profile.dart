@@ -1,14 +1,14 @@
-import 'package:consume_marvel_api/controllers/account_controller.dart';
-import 'package:consume_marvel_api/controllers/profile_controller.dart';
-import 'package:consume_marvel_api/utils/validations.dart';
-import 'package:consume_marvel_api/widgets/text_form_field_custom.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AlertDialogAddProfile extends StatelessWidget {
-  final TextEditingController ctrlText = TextEditingController();
-  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+import '../controllers/account_controller.dart';
+import '../controllers/profile_controller.dart';
+import '../utils/errors.dart';
+import '../utils/validations.dart';
+import '../widgets/alert_dialog_error.dart';
+import '../widgets/text_form_field_custom.dart';
 
+class AlertDialogAddProfile extends StatefulWidget {
   final TextCapitalization capitalization;
   final String titleAlert;
   final String labelText;
@@ -18,6 +18,15 @@ class AlertDialogAddProfile extends StatelessWidget {
     @required this.capitalization,
     @required this.labelText,
   });
+
+  @override
+  _AlertDialogAddProfileState createState() => _AlertDialogAddProfileState();
+}
+
+class _AlertDialogAddProfileState extends State<AlertDialogAddProfile> {
+  final TextEditingController ctrlText = TextEditingController();
+
+  final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
   String validation(String name) {
     return Validations().nameIsValid(ctrlText.text);
@@ -31,25 +40,35 @@ class AlertDialogAddProfile extends StatelessWidget {
         Provider.of<AccountController>(context, listen: false);
 
     return AlertDialog(
-      title: Text(titleAlert),
+      title: Text(widget.titleAlert),
       content: Form(
         key: _formKey,
         child: TextFormFieldCustom(
           ctrlText,
           validation,
-          capitalization,
-          labelText,
+          widget.capitalization,
+          widget.labelText,
           true,
         ),
       ),
       actions: [
         FlatButton(
           child: Text('Add Profile'),
-          onPressed: () {
+          onPressed: () async {
             if (_formKey.currentState.validate()) {
-              ctrlProfile.createProfile(ctrlAccount.account, ctrlText.text);
+              await ctrlProfile.createProfile(
+                  ctrlAccount.account, ctrlText.text);
+              if (ctrlProfile.state == ProfileState.error) {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialogError('Erros', Errors.existingProfile);
+                  },
+                );
+              } else {
+                Navigator.pop(context);
+              }
             }
-            Navigator.pop(context);
           },
         ),
       ],
