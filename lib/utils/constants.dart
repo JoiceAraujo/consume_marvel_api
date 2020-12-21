@@ -7,5 +7,5 @@ class Constants {
       '$_baseURL/v1/public/characters?name={name}&ts=$_ts&apikey=$_apiKey&hash=$_hash';
   static const String imageCharacter = '{path}/portrait_fantastic.{extension}';
   static const String charactersList =
-      '$_baseURL/v1/public/characters?ts=$_ts&apikey=$_apiKey&hash=$_hash';
+      '$_baseURL/v1/public/characters?limit=10&offset={offset}&ts=$_ts&apikey=$_apiKey&hash=$_hash';
 }

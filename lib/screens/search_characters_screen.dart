@@ -13,16 +13,20 @@ class SearchCharactersScreen extends StatefulWidget {
 
 class _SearchCharactersScreenState extends State<SearchCharactersScreen> {
   final TextEditingController _nameCharacter = TextEditingController();
+  int offset = 0;
 
   @override
   Widget build(BuildContext context) {
+    CharactersApiController ctrl =
+        Provider.of<CharactersApiController>(context);
+
     return SafeArea(
       minimum: EdgeInsets.all(15.0),
       left: true,
       right: true,
       top: true,
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
           TextField(
             controller: _nameCharacter,
@@ -39,10 +43,8 @@ class _SearchCharactersScreenState extends State<SearchCharactersScreen> {
             ),
             color: Colors.red,
             onPressed: () async {
-              CharactersApiController ctrl =
-                  Provider.of<CharactersApiController>(context, listen: false);
-
-              await ctrl.characters(_nameCharacter.text);
+              await ctrl.getCharactersList(offset);
+              offset = offset + 10;
             },
           )
         ],

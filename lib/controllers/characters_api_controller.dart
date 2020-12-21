@@ -6,8 +6,19 @@ import '../services/characters_api_service.dart';
 class CharactersApiController extends ChangeNotifier {
   final CharacterApiService marvelApiService = CharacterApiService();
   CharactersState charactersState = CharactersState.searching;
+  List<Character> charactersList = [];
   Character character;
   String characterImageLink;
+
+  Future<void> getCharactersList(int offset) async {
+    charactersState = CharactersState.loading;
+    notifyListeners();
+
+    charactersList = await marvelApiService.getListCharacters(offset);
+
+    charactersState = CharactersState.ready;
+    notifyListeners();
+  }
 
   Future<void> characters(String name) async {
     charactersState = CharactersState.loading;
