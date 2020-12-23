@@ -15,15 +15,19 @@ class HomeScreen extends StatelessWidget {
         switch (ctrl.accountState) {
           case AccountState.unauthenticated:
             return SignInScreen();
+
           case AccountState.authenticated:
             return IndexScreen();
+
           case AccountState.authenticating:
             return Container(
               child: Center(child: CircularProgressIndicator()),
-              color: Colors.white70,
+              color: Colors.white,
             );
+
           case AccountState.error:
             return SignUpScreen();
+
           default:
             return SignInScreen();
         }

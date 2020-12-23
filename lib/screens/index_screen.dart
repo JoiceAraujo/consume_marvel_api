@@ -3,8 +3,8 @@ import 'package:provider/provider.dart';
 
 import '../controllers/characters_api_controller.dart';
 import '../controllers/profile_controller.dart';
+import '../screens/home_characters_screen.dart';
 import '../screens/profile_screen.dart';
-import '../screens/search_characters_screen.dart';
 import '../widgets/alert_dialog_add_profile.dart';
 
 class IndexScreen extends StatefulWidget {
@@ -15,7 +15,7 @@ class IndexScreen extends StatefulWidget {
 
 class _IndexScreenState extends State<IndexScreen> {
   final List<Widget> _screens = [
-    SearchCharactersScreen(),
+    HomeCharacterScreen(),
     ProfileScreen(),
   ];
   int _currentIndex = 0;
@@ -31,7 +31,7 @@ class _IndexScreenState extends State<IndexScreen> {
         Provider.of<CharactersApiController>(context);
 
     switch (ctrlCharacters.charactersState) {
-      case CharactersState.ready:
+      case CharactersState.characterReady:
         return IconButton(
           icon: Icon(
             Icons.arrow_back,

@@ -50,7 +50,13 @@ class CharacterApiService {
     }
   }
 
-  Future<String> getImageLink(Character character) async {
+  String getImageLink(Character character) {
+    return Constants.imageCharacter
+        .replaceFirst('{path}', '${character.thumbnailPath}')
+        .replaceFirst('{extension}', '${character.thumbnailExtension}');
+  }
+
+  String getImageLinks(Character character) {
     return Constants.imageCharacter
         .replaceFirst('{path}', '${character.thumbnailPath}')
         .replaceFirst('{extension}', '${character.thumbnailExtension}');
