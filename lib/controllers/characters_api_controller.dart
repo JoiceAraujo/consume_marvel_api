@@ -8,7 +8,6 @@ class CharactersApiController extends ChangeNotifier {
   CharactersState charactersState = CharactersState.undefined;
   List<Character> charactersList = [];
   Character character;
-  String characterImageLink;
   int offset = 0;
 
   void init() async {
@@ -69,7 +68,7 @@ class CharactersApiController extends ChangeNotifier {
   }
 
   void getBackToSearch() {
-    charactersState = CharactersState.searching;
+    charactersState = CharactersState.listReady;
     notifyListeners();
   }
 
@@ -84,6 +83,5 @@ enum CharactersState {
   characterReady,
   listReady,
   error,
-  searching,
   undefined,
 }

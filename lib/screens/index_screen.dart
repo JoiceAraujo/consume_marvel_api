@@ -26,27 +26,6 @@ class _IndexScreenState extends State<IndexScreen> {
     });
   }
 
-  Widget getLeading(BuildContext context) {
-    final CharactersApiController ctrlCharacters =
-        Provider.of<CharactersApiController>(context);
-
-    switch (ctrlCharacters.charactersState) {
-      case CharactersState.characterReady:
-        return IconButton(
-          icon: Icon(
-            Icons.arrow_back,
-            color: Colors.white,
-          ),
-          onPressed: () {
-            Provider.of<CharactersApiController>(context, listen: false)
-                .getBackToSearch();
-          },
-        );
-      default:
-        return null;
-    }
-  }
-
   Widget getFloatActionButton(BuildContext context, int index) {
     if (index == 1) {
       return FloatingActionButton(
@@ -71,6 +50,26 @@ class _IndexScreenState extends State<IndexScreen> {
       );
     } else {
       return null;
+    }
+  }
+
+  Widget getLeading(BuildContext _) {
+    CharactersApiController ctrl = Provider.of<CharactersApiController>(_);
+
+    switch (ctrl.charactersState) {
+      case CharactersState.characterReady:
+        return IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Provider.of<CharactersApiController>(context, listen: false)
+                .getBackToSearch();
+          },
+        );
+      default:
+        return null;
     }
   }
 

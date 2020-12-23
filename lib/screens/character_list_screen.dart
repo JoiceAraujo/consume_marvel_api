@@ -35,7 +35,9 @@ class _CharacterListScreenState extends State<CharacterListScreen> {
         children: characterList.map((character) {
           return InkWell(
             child: CharacterCard(character.name, character.imageLink),
-            onTap: () {},
+            onTap: () async {
+              await ctrl.getCharacterByName(character.name);
+            },
           );
         }).toList(),
       );
