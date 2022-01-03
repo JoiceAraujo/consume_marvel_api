@@ -1,8 +1,9 @@
-import 'package:consume_marvel_api/controllers/account_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'controllers/account_controller.dart';
 import 'controllers/characters_api_controller.dart';
+import 'controllers/profile_controller.dart';
 import 'utils/app_routes.dart';
 
 void main() {
@@ -14,8 +15,11 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => CharactersApiController()),
+        // ignore: unnecessary_statements
+        ChangeNotifierProvider(
+            create: (_) => CharactersApiController()..init()),
         ChangeNotifierProvider(create: (_) => AccountController()..init()),
+        ChangeNotifierProvider(create: (_) => ProfileController()..init()),
       ],
       child: MaterialApp(
         title: 'Flutter Demo',

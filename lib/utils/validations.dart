@@ -3,11 +3,15 @@ import '../utils/errors.dart';
 
 class Validations {
   bool credentialsIsNotEmpty(String email, String password) {
-    return email.isNotEmpty && password.isNotEmpty == true ? true : false;
+    return email.trim().isNotEmpty && password.trim().isNotEmpty == true
+        ? true
+        : false;
   }
 
   bool emailIsValid(String email) {
-    return email.contains('@') && email.contains('.') ? true : false;
+    return email.contains('@') && email.contains('.') && email.length >= 5
+        ? true
+        : false;
   }
 
   bool passwordIsValid(String password) {
@@ -26,12 +30,45 @@ class Validations {
     return account;
   }
 
-  bool nameIsValid(String name) {
-    if (name.isNotEmpty) {
-      return true;
+  String nameIsValid(String name) {
+    if (name.trim().isEmpty) {
+      return Errors.invalidName;
     } else {
-      print(Errors.invalidName);
-      return false;
+      return null;
     }
+  }
+
+  String birthdayIsValid(String birthday) {
+    if (birthday.trim().isEmpty) {
+      return Errors.nullBirthday;
+    } else {
+      return null;
+    }
+  }
+
+  String emailValidation(String email) {
+    if (email.trim().isEmpty) {
+      return Errors.nullEmail;
+    } else {
+      if (emailIsValid(email) == false) {
+        return Errors.invalidEmail;
+      } else {
+        return null;
+      }
+    }
+  }
+
+  String passwordValidation(String password) {
+    return password.length < 6 ? Errors.invalidPassword : null;
+  }
+
+  String passwordConfirmationValidation(
+    String password,
+    String passwordConfirmation,
+  ) {
+    if (password != passwordConfirmation) {
+      return Errors.passwordsNotEquals;
+    }
+    return null;
   }
 }

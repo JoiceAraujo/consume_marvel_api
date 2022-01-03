@@ -14,9 +14,10 @@ class CharacterScreen extends StatefulWidget {
 class _CharacterScreenState extends State<CharacterScreen> {
   @override
   Widget build(BuildContext context) {
-    CharactersApiController ctrl =
+    CharactersApiController ctrlCharacter =
         Provider.of<CharactersApiController>(context);
-    Character character = ctrl.character;
+    Character character = ctrlCharacter.character;
+
     return SafeArea(
       child: Card(
         margin: EdgeInsets.all(20.0),
@@ -30,7 +31,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
                 Flexible(
                   fit: FlexFit.loose,
                   flex: 2,
-                  child: Image.network(ctrl.characterImageLink),
+                  child: Image.network(character.imageLink),
                 ),
                 SizedBox(
                   height: 10.0,

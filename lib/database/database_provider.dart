@@ -48,10 +48,8 @@ class DatabaseProvider {
 
       if (queryResult.isNotEmpty) {
         Account account = Account.fromMap(queryResult.first);
-        createFirstProfile(account);
         return account;
       } else {
-        print(account);
         return account;
       }
     } catch (e) {
@@ -64,6 +62,7 @@ class DatabaseProvider {
     final Database db = await database;
     try {
       account.id = await db.insert('Accounts', account.toMap());
+      createFirstProfile(account);
       return account;
     } catch (e) {
       print(e);
@@ -146,16 +145,16 @@ class DatabaseProvider {
     }
   }
 
-  Future<Profile> currentProfile(Account account) async {
+  Future<Profile> currentProfile(Account account, String nameProfile) async {
     final Database db = await database;
     Profile profile;
 
     try {
       List<Map<String, dynamic>> queryResult = await db.query(
         'Profiles',
-        where: 'main = ? && account_id = ?',
+        where: 'name = ? AND account_id = ?',
         whereArgs: [
-          1,
+          nameProfile,
           account.id,
         ],
       );
@@ -176,6 +175,47 @@ class DatabaseProvider {
     final Database db = await database;
     Profile firstProfile = Profile(account.name, account.id, true);
 
-    firstProfile.id = await db.insert('Accounts', firstProfile.toMap());
+    firstProfile.id = await db.insert('Profiles', firstProfile.toMap());
+  }
+
+  Future<Profile> profileExist(Account account, String name) async {
+    final Database db = await database;
+
+    try {
+      List<Map<String, dynamic>> queryResult = await db.query(
+        'Profiles',
+        where: 'account_id = ? AND name = ?',
+        whereArgs: [account.id, name],
+      );
+
+      if (queryResult.isNotEmpty) {
+        return Profile.fromMap(queryResult.first);
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
+
+  Future<Profile> getMainProfile(Account account) async {
+    final Database db = await database;
+    try {
+      List<Map<String, dynamic>> queryResult = await db.query(
+        'Profiles',
+        where: 'main = ? AND account_id = ?',
+        whereArgs: [1, account.id],
+      );
+
+      if (queryResult.isNotEmpty) {
+        Profile profile = Profile.fromMap(queryResult.first);
+        return profile;
+      } else {
+        return null;
+      }
+    } catch (e) {
+      print(e);
+      return null;
+    }
   }
 }

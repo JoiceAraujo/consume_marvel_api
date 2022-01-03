@@ -4,6 +4,7 @@ class Character {
   String description;
   String thumbnailPath;
   String thumbnailExtension;
+  String imageLink;
 
   Character(this.id, this.name, this.description, this.thumbnailPath,
       this.thumbnailExtension);

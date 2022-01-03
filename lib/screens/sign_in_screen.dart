@@ -1,6 +1,3 @@
-import 'package:consume_marvel_api/utils/errors.dart';
-import 'package:consume_marvel_api/utils/validations.dart';
-import 'package:consume_marvel_api/widgets/alert_dialog_error.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -8,6 +5,9 @@ import 'package:provider/provider.dart';
 
 import '../controllers/account_controller.dart';
 import '../screens/sign_up_screen.dart';
+import '../utils/errors.dart';
+import '../utils/validations.dart';
+import '../widgets/alert_dialog_error.dart';
 import '../widgets/elevated_button_custom.dart';
 import '../widgets/text_field_custom.dart';
 

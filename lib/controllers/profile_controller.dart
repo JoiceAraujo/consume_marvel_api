@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 import '../models/account.dart';
 import '../models/profile.dart';
@@ -16,13 +17,17 @@ class ProfileController extends ChangeNotifier {
     notifyListeners();
 
     Account account = await AccountService().accountLogged();
-    if (account != null) {
-      state = ProfileState.ready;
 
+    if (account != null) {
       profilesList = await profileService.loadProfiles(account);
+
+      profile = await profileService.getMainProfile(account);
+
+      state = ProfileState.ready;
     } else {
       state = ProfileState.undefined;
     }
+
     notifyListeners();
   }
 
@@ -30,9 +35,12 @@ class ProfileController extends ChangeNotifier {
     state = ProfileState.loading;
     notifyListeners();
 
-    profile = await profileService.createProfile(account, name);
-    if (profile != null) {
+    if (await profileService.profileExist(account, name) == false) {
+      profile = await profileService.createProfile(account, name);
+
       profilesList.add(profile);
+
+      await profileService.currentProfile(account);
 
       state = ProfileState.ready;
     } else {
@@ -41,33 +49,45 @@ class ProfileController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void deleteProfile(Profile profile) {
+  void deleteProfile(Profile deleteProfile) async {
     state = ProfileState.loading;
     notifyListeners();
 
-    profileService.deleteProfile(profile);
+    Account account = await AccountService().accountLogged();
 
-    state = ProfileState.ready;
+    if (!deleteProfile.main) {
+      Profile currentProfile = await profileService.currentProfile(account);
+      if (deleteProfile.name == currentProfile.name) {
+        removeProfileFromLocalListAndDataBase(deleteProfile);
+
+        await changeProfile(await profileService.getMainProfile(account));
+
+        state = ProfileState.ready;
+      } else {
+        removeProfileFromLocalListAndDataBase(deleteProfile);
+
+        state = ProfileState.ready;
+      }
+    } else {
+      state = ProfileState.error;
+    }
+
     notifyListeners();
   }
 
-  void changeProfile(Profile profile) async {
-    state = ProfileState.loading;
-    notifyListeners();
-
-    profile = await profileService.changeProfile(profile);
-
-    state = ProfileState.ready;
-    notifyListeners();
+  void removeProfileFromLocalListAndDataBase(Profile deleteProfile) async {
+    profilesList.removeWhere((element) => element == deleteProfile);
+    await profileService.deleteProfile(deleteProfile);
   }
 
-  void currentProfile(Account account) async {
+  void changeProfile(Profile newProfile) async {
     state = ProfileState.loading;
     notifyListeners();
 
-    profile = await profileService.currentProfile(account);
+    profile = await profileService.changeProfile(newProfile);
 
     state = ProfileState.ready;
+    notifyListeners();
   }
 }
 

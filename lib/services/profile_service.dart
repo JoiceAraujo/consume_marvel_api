@@ -3,30 +3,30 @@ import 'package:shared_preferences/shared_preferences.dart';
 import '../database/database_provider.dart';
 import '../models/account.dart';
 import '../models/profile.dart';
-import '../utils/errors.dart';
 import '../utils/validations.dart';
 
 class ProfileService {
   final DatabaseProvider database = DatabaseProvider.db;
-  SharedPreferences _prefs;
+  Future<SharedPreferences> _prefs = SharedPreferences.getInstance();
   Validations validations = Validations();
 
   Future<Profile> createProfile(Account account, String name) async {
     Profile profile = Profile(name, account.id, false);
 
-    if (validations.nameIsValid(name)) {
-      Profile completeProfile = await database.createProfile(profile);
-      return completeProfile;
-    } else {
-      return null;
-    }
+    Profile completeProfile = await database.createProfile(profile);
+
+    SharedPreferences prefs = await _prefs;
+    prefs.setString('name', profile.name);
+
+    return completeProfile;
   }
 
-  void deleteProfile(Profile profile) {
+  Future<bool> deleteProfile(Profile profile) async {
     if (profile.main) {
-      print('deleteProfile' + ' ' + Errors.deleteMainProfile);
+      return false;
     } else {
-      database.deleteProfile(profile);
+      await database.deleteProfile(profile);
+      return true;
     }
   }
 
@@ -40,22 +40,39 @@ class ProfileService {
   }
 
   Future<Profile> changeProfile(Profile profile) async {
-    _prefs = await SharedPreferences.getInstance();
+    SharedPreferences prefs = await _prefs;
     Profile newProfile = await database.changeProfile(profile);
 
-    _prefs.setString('name', newProfile.name);
-    _prefs.getString('name');
+    prefs.setString('name', newProfile.name);
 
     return newProfile;
   }
 
   Future<Profile> currentProfile(Account account) async {
-    _prefs = await SharedPreferences.getInstance();
-    Profile profile = await database.currentProfile(account);
+    SharedPreferences prefs = await _prefs;
 
-    _prefs.setString('name', profile.name);
-    _prefs.getString('name');
+    String nameProfile = prefs.getString('name');
+
+    Profile profile = await database.currentProfile(account, nameProfile);
 
     return profile;
+  }
+
+  Future<Profile> getMainProfile(Account account) async {
+    SharedPreferences prefs = await _prefs;
+    Profile profile = await database.getMainProfile(account);
+
+    if (profile != null) {
+      prefs.setString('name', profile.name);
+      return profile;
+    } else {
+      return null;
+    }
+  }
+
+  Future<bool> profileExist(Account account, String name) async {
+    Profile profile = await database.profileExist(account, name);
+
+    return profile != null;
   }
 }
